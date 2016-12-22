@@ -11,22 +11,41 @@
 </head>
 
 
-<body ng-app="myApp" ng-controller="MoodifyController">
+<body ng-app="myApp" ng-controller="MoodifyController" style="text-align:center">
 
+	
+<!-- Spotify Play Button -->
+	<!-- <div>
+		<iframe src="https://embed.spotify.com/?uri=&theme=white" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+	</div>
+
+	<br> -->
+
+
+<!-- Search form -->
 	<form id="search-form">
 		<input type="text" ng-model="query" value="" class="form-control" placeholder="Type an Artist Name"/>
 		<input type="submit" ng-click="fetch()" class="btn btn-primary" value="Search" />
 	</form>
 
+
+
+<!-- Station list -->
 	<div ng-repeat="station in stations">
 		{{station.name}}
 	</div>
 
+	<hr>
 
-	<div ng-repeat="searchresult in searchresults">
+<!-- Results (eventually will be taken out and replaced with just play button for radio) -->
+	<!-- <div ng-repeat="searchresult in searchresults">
 		{{searchresult.track}}
 		</br>
 		<a href="{{searchresult.preview}}" target="_blank"><img src="{{searchresult.art}}" width="250" height="250"></a>
+	</div> -->
+
+	<div ng-repeat="track in tracks">
+		{{track.uri}} --- {{track.valence}}
 	</div>
 
 
