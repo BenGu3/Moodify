@@ -23,8 +23,11 @@ Current State:
   No auth.
   No style.
   Gets each track in a single album by input artist.
-  Gets valence of each track
+  Gets track uri and valence.
+  Almost creates a playlist to add songs to.
   
   Problems:
     Don't know how to push a var on array with valence included.
       Get valence from different HTTP request inside another HTTP request.
+        May not need to have an array with names and all that. I can just use the URI and valence as it's set up now.
+    To create a new playlist and add to it, it requires an authtoken directly from the user. 
