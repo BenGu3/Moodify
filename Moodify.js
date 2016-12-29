@@ -1,23 +1,26 @@
 var app = angular.module('myApp', [])
-app.controller('MoodifyController', function($scope, $http) { 
+app.controller('MoodifyController', function($scope, $http, $sce) { 
 
 
     $scope.searchresults = [];
     $scope.stations = [];
-    $scope.tracks = [];
+    var tracks = [];
+    var token = 'BQAUAeEXtw6M73kwkjy9nkSBvWbecy1K_2SUPCrWN7gGi9RRzeHlXeSutXcmlev5q4XPhXLDm1vKZ3UtEnY0HwAXW35znwny_D6uwOQKIuSDxxbkR4sF_nZTk-sOPgD-ncyN_2rgCyw0TEo5Gb4cy5lSnF6MSSMjRizntbXwQLQCFwbiU6MYIV_mcRPSn474M5CamYipG4ej94499H1swSDOxuf2_aqT9n8vjAyrmhnuJA'   
+    var playlist_id;
+
 
 
     $scope.fetch = function () {
 
-        var stationname = $scope.query;
-        stationname += " Station";
+        var artist = $scope.query;
+        var stationname = artist + " Station";
 
         var checkstation = false;
 
         for(var i = 0; i < $scope.stations.length; i++)
         {
             if ($scope.stations[i].name == stationname) {
-                checkstation = true;a
+                checkstation = true;
             }
         }
 
@@ -29,94 +32,102 @@ app.controller('MoodifyController', function($scope, $http) {
 
 
 // Create New Playlist
-            $http.post("https://api.spotify.com/v1/users/bengu3/playlists",
-            {
-
+        
+            $http({
+                url: 'https://api.spotify.com/v1/users/bengu3/playlists',
+                method: "POST",
                 headers: {
                     "Accept": 'application/json',
-                    "Authorization": 'Bearer BQAuaE-s2_EBCB6gycxj-DN4QqRELQhUs42XfoyACn1pJZNrK1jKnYZ0nlF9koxUqyurMcyqULVPW1QU_JHBwXRZs_z_WEZ_XAWYkHeZjIKHFFMSsgxvarKW1LENK2a5L1Kf1u4XhqG4kiadv67X1BzIJ5Hja0oLeyNzCJifbCDUHeI0UfyiyzJx8nUTfjPIT80_7wjc51Lp-U34xP1ocMzGU1IHyQQOBsuPgWznQDhC-A'
-                    // "Content-Type": 'application/json'
+                    "Authorization": 'Bearer ' + token,
+                    "Content-Type": 'application/json'  
                 },
-
-                data: {
-                    "name": "NewPlaylist",
-                    "public": false
-                }
-
+                data: { "name" : "NewPlaylist", "public" : false }
             })
-            .then(function(result){
-                console.log(result);
-            });
-        
+            .then(function(response) {
+                console.log(response.data.uri);
 
+                playlist_id = response.data.id;
+                console.log(response.data.id);
 
+                var playlist_uri = "https://embed.spotify.com/?uri=" + response.data.uri + "&theme=white"
+                var spotify_player = "<iframe src=\"" + playlist_uri + "\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>";
+                $scope.spotify_player = $sce.trustAsHtml(spotify_player);
 
 
 // Get music
-            $http.get("https://api.spotify.com/v1/search?q=" + $scope.query + "&type=album")
-            .then(function(response)
-            { 
-
-                var albumurl = response.data.albums.items[0].href;
-                //console.log(albumurl);
-
-
-                $http.get(albumurl)
-                .then(function(albumresponse)
+                $http.get("https://api.spotify.com/v1/search?q=" + artist + "&type=album")
+                .then(function(response)
                 { 
 
-                    for (var i = 0; i < albumresponse.data.tracks.items.length; i++) {
+                    var albumurl = response.data.albums.items[0].href;
+                    console.log(albumurl);
 
 
-                        // ****ORIGINAL TEST CODE****
-                        // Got track name, album image, and 30 seconds preview ad displayed those.
-                        // ---------------------------------------------------------------
-                        //
-                        // var trackname = albumresponse.data.tracks.items[i].name;
-                        // var previewurl = albumresponse.data.tracks.items[i].preview_url;
-                        // var albumimg = albumresponse.data.images[1].url;
-                        // console.log(trackname);
-                        // console.log(albumimg);
-                        // console.log(previewurl);
-                        //
-                        //
-                        // $scope.searchresults.push({ 
-                        //     track: trackname,
-                        //     preview: previewurl,
-                        //     art: albumimg
-                        // });
+                    $http.get(albumurl)
+                    .then(function(albumresponse)
+                    { 
+
+                        for (var i = 0; i < albumresponse.data.tracks.items.length; i++) {
+
+                            var featuresurl = 'https://api.spotify.com/v1/audio-features/' + albumresponse.data.tracks.items[i].id;
+
+                            $http.get(featuresurl, {
+                                headers: {
+                                    "Authorization": 'Bearer ' + token
+                                }
+                              })
+                            .then(function(res){
+
+                                var valence = res.data.valence;
+                                var tracklink = res.data.uri;
+
+                                if(valence > .65)
+                                {
+                                    tracks.push({
+                                        uri: tracklink,
+                                        valence: valence
+                                    });
+
+                                    console.log("Added");
+                                }
 
 
-                        var featuresurl = 'https://api.spotify.com/v1/audio-features/' + albumresponse.data.tracks.items[i].id;
-                        //console.log(featuresurl);
+                              })
 
-                        $http.get(featuresurl, {
-                            headers: {
-                                "Authorization": 'Bearer BQA0YQRuCu5sQtvtuALAmrNJ4pVwXTaHP2rrjtowR5baQ_nKiktC2-KEFjXxp0Bi0_YvYoiF75Eh4jByS8ln_mm4z8WFji817TgO5oGfIUaLWnf2TOFthPtWy2Va99nFsambeQ1X3asgzQBUzM20TWA2WpSJ4eMGL68mNzZTBtsl5SHDFBpM6eGV7AIVV7SP1ojgUL1_YrnKELAnFITllKDIZ3baSrr-yYIOxMSCJr5vag'
-                            }
-                          })
-                        .then(function(res){
-                            //console.log(res)
-                            var valence = res.data.valence;
-                            var tracklink = res.data.uri;
+                             .then(function() {
 
-                            // console.log(tracklink);
-                            // console.log(valence);
+                                var playlist_add_url = 'https://api.spotify.com/v1/users/bengu3/playlists/' + playlist_id + '/tracks?uris=';
 
-                            if(valence > .65)
-                            {
-                                $scope.tracks.push({
-                                    uri: tracklink,
-                                    valence: valence
+                                angular.forEach(tracks, function(value, key, obj) {
+
+                                    playlist_add_url += encodeURIComponent(value.uri);
+
+                                    if (key < obj.length-1) {
+                                        playlist_add_url += ",";
+                                    }
                                 });
 
-                                console.log("Added");
-                            }
-
-
-                          });
-                    }
-                });
+                                $http({
+                                    url: playlist_add_url,
+                                    method: "POST",
+                                    headers: {
+                                        "Accept": 'application/json',
+                                        "Authorization": 'Bearer ' + token,
+                                    }
+                                })
+                                .then(function(response) {
+                                    // console.log(response);
+                                }, 
+                                function(response) { 
+                                        console.log("FAILED TO ADD TO PLAYLIST");
+                                });
+                            });
+                        }
+                    });
+                })
+            }, 
+            function(response) { 
+                    console.log("FAILED TO CREATE PLAYLIST");
             });
         }
 
@@ -125,13 +136,6 @@ app.controller('MoodifyController', function($scope, $http) {
     }
 });
 
-
-// NOTES
-
-
-
-// Auth Token for Spotify API
-// http://stackoverflow.com/questions/32343391/angular-http-get-request-with-authorization-token-header    
 
 
 

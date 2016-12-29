@@ -15,11 +15,12 @@
 
 	
 <!-- Spotify Play Button -->
-	<!-- <div>
-		<iframe src="https://embed.spotify.com/?uri=&theme=white" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+
+
+	<div ng-bind-html="spotify_player">
 	</div>
 
-	<br> -->
+	<br>
 
 
 <!-- Search form -->
@@ -38,11 +39,11 @@
 	<hr>
 
 <!-- Results (eventually will be taken out and replaced with just play button for radio) -->
-	<!-- <div ng-repeat="searchresult in searchresults">
+	<div ng-repeat="searchresult in searchresults">
 		{{searchresult.track}}
 		</br>
 		<a href="{{searchresult.preview}}" target="_blank"><img src="{{searchresult.art}}" width="250" height="250"></a>
-	</div> -->
+	</div>
 
 	<div ng-repeat="track in tracks">
 		{{track.uri}} --- {{track.valence}}
