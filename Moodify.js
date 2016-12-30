@@ -2,19 +2,19 @@ angular
 .module('MoodifyApp', ['spotify'])
 .config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
-    SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/Angular Spotify/Moodify.html');
+    SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/Moodify.html');
     SpotifyProvider.setScope('playlist-read-private');
 })
 .controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
 
-    // $scope.login = function () {
-    //   Spotify.login().then(function (data) {
-    //     console.log(data);
-    //     alert("You are now logged in");
-    //   }, function () {
-    //     console.log('didn\'t log in');
-    //   })
-    // };
+    $scope.login = function () {
+      Spotify.login().then(function (data) {
+        console.log(data);
+        alert("You are now logged in");
+      }, function () {
+        console.log('didn\'t log in');
+      })
+    };
 
 
     $scope.stations = [];
