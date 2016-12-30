@@ -10,8 +10,7 @@
       settings.clientId = null;
       settings.redirectUri = null;
       settings.scope = null;
-      settings.authToken = 'BQA1CeocA1D2emrEu6pUmoX6Er-iXd8ua5aNdYPGjhNl16_LcH7anX8w3gRZw5l4RugUzi7XW8EFFVrT1Guarb4oBzcyAT2TvT8bbO3xDhMqikgfx7p2Q_Jq4OKSxutVxHbJSSMBi9g0KWGRvQrHOBocGIZK7cKIP0W_TRJVhg2VeV4UflhlOokOinJJlbO_36VTEXlSlS3r_wPWYp5rpXlhEZLxhnoN4o3Zd8p_0UyA_g';
-      
+      settings.authToken = 'BQA9dzXEeO-ipPRSPNKXPSZJIU4thMQP5t8mUlgxK02_PyRSZOgydxgn_Cdp65Tb2SJBgH8eP1gfvqJH0Rgu6H2u8_0Qzp2Dz_DC0OtBFoyDmZHUL1Hphb3umSsJn-betf6iiy7CZ9_1zmvHQnwseV5KSeoDiykp1OHhb5KoDmDvzbTk9b5F4DLqi2g8KMvubi3FgeoYhyYc3etNsIUFvBLWVpdbhHvL4CS_Pxp4zNuB2A';
       this.setClientId = function (clientId) {
         settings.clientId = clientId;
         return settings.clientId;
