@@ -1,12 +1,23 @@
 {
-  "author": "Spotify",
-  "name": "web-api-auth-examples",
-  "description": "Basic examples of the Spotify authorization flows through OAuth 2",
+  "name": "moodify",
   "version": "0.0.1",
-  "dependencies": {
-    "cookie-parser": "1.3.2",
-    "express": "~4.0.0",
-    "querystring": "~0.2.0",
-    "request": "~2.34.0"
+  "description": "A web app created with the Spotify API",
+  "homepage": "https://github.com/BenGu3/Moodify",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenGu3/Moodify.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "local",
+    "storage",
+    "Spotify"
+  ],
+  "author": "BenGu3 <benjee.012@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "angular-spotify": "1.4.2",
+    "angular-local-storage": "0.5.2"
   }
 }
