@@ -7,7 +7,14 @@
 
 <body ng-controller="MainController" style="text-align:center">
 
-<button ng-click="login()">Login with Spotify</button>
+  <button ng-click="login()">Login with Spotify</button>
+
+  <button ng-click="grab_token()">GET YOUR TOKEN HERE</button>
+  </br>
+  <div ng-bind="token_place"></div>
+  </br>
+
+
   
 <!-- Search form -->
   <form id="search-form">

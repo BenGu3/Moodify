@@ -16,6 +16,11 @@ angular
       })
     };
 
+    $scope.grab_token = function() {
+    	var token = localstorage.getItem('spotify_token');
+    	$scope.token_place = token;
+    };
+
 
     $scope.stations = [];
 
