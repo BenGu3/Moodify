@@ -27,6 +27,17 @@
 
 
 
+  <script>
+    window.onload = function () {
+      var hash = window.location.hash;
+      if (window.location.search.substring(1).indexOf("error") !== -1) {
+        window.close();
+      } else if (hash) {
+        var token = window.location.hash.split('&')[0].split('=')[1];
+        localStorage.setItem('spotify-token', token);
+      }
+    }
+  </script>
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="angular-spotify.js"></script>
   <script src="Moodify.js"></script>
