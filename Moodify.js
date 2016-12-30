@@ -1,141 +1,157 @@
-var app = angular.module('myApp', [])
-app.controller('MoodifyController', function($scope, $http, $sce) { 
+angular
+.module('MoodifyApp', ['spotify'])
+.config(function (SpotifyProvider) {
+    SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
+    SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/Angular Spotify/Moodify.html');
+    SpotifyProvider.setScope('playlist-read-private');
+})
+.controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
+
+    // $scope.login = function () {
+    //   Spotify.login().then(function (data) {
+    //     console.log(data);
+    //     alert("You are now logged in");
+    //   }, function () {
+    //     console.log('didn\'t log in');
+    //   })
+    // };
 
 
-    $scope.searchresults = [];
     $scope.stations = [];
-    var tracks = [];
-    var token = 'BQAUAeEXtw6M73kwkjy9nkSBvWbecy1K_2SUPCrWN7gGi9RRzeHlXeSutXcmlev5q4XPhXLDm1vKZ3UtEnY0HwAXW35znwny_D6uwOQKIuSDxxbkR4sF_nZTk-sOPgD-ncyN_2rgCyw0TEo5Gb4cy5lSnF6MSSMjRizntbXwQLQCFwbiU6MYIV_mcRPSn474M5CamYipG4ej94499H1swSDOxuf2_aqT9n8vjAyrmhnuJA'   
-    var playlist_id;
 
-
-
-    $scope.fetch = function () {
+    $scope.fetch_new_station = function () {
 
         var artist = $scope.query;
-        var stationname = artist + " Station";
+        var station_name = artist + " Station (Moodify)";
+        var check_station = false;
 
-        var checkstation = false;
+        if (artist == "") {
+            return;
+        }
 
         for(var i = 0; i < $scope.stations.length; i++)
         {
-            if ($scope.stations[i].name == stationname) {
-                checkstation = true;
+            if ($scope.stations[i].name == station_name) {
+                check_station = true;
             }
         }
 
-        if(checkstation == false) {
+        if(check_station == false) {
 
             $scope.stations.push({
-                name: stationname
+                name: station_name
             });
 
+            var id_list = [];
 
-// Create New Playlist
-        
-            $http({
-                url: 'https://api.spotify.com/v1/users/bengu3/playlists',
-                method: "POST",
-                headers: {
-                    "Accept": 'application/json',
-                    "Authorization": 'Bearer ' + token,
-                    "Content-Type": 'application/json'  
-                },
-                data: { "name" : "NewPlaylist", "public" : false }
-            })
-            .then(function(response) {
-                console.log(response.data.uri);
+            var tracks = [];    
+            var playlist_add_list = "";
 
-                playlist_id = response.data.id;
-                console.log(response.data.id);
+            Spotify.createPlaylist('bengu3', { name: station_name })
+            .then(function(playlist_data) {
 
-                var playlist_uri = "https://embed.spotify.com/?uri=" + response.data.uri + "&theme=white"
+                var playlist_id = playlist_data.id;
+                var playlist_uri = "https://embed.spotify.com/?uri=" + playlist_data.uri + "&theme=white"
                 var spotify_player = "<iframe src=\"" + playlist_uri + "\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>";
                 $scope.spotify_player = $sce.trustAsHtml(spotify_player);
 
+                Spotify.search(artist, 'artist')
+                .then(function(search_data) {
 
-// Get music
-                $http.get("https://api.spotify.com/v1/search?q=" + artist + "&type=album")
-                .then(function(response)
-                { 
+                    Spotify.getArtistAlbums(search_data.artists.items[0].id)
+                    .then(function(artist_data) {
 
-                    var albumurl = response.data.albums.items[0].href;
-                    console.log(albumurl);
+                        var list_of_albums = "";
 
+                        // Number of Albums Size Checks
+                        var number_of_albums = artist_data.items.length;
+                        var static_size = 8;
 
-                    $http.get(albumurl)
-                    .then(function(albumresponse)
-                    { 
+                        if (number_of_albums < static_size) {
+                            var size_used = number_of_albums;
+                        }
+                        else {
+                            var size_used = static_size;
+                        }
 
-                        for (var i = 0; i < albumresponse.data.tracks.items.length; i++) {
+                        for (var i = 0; i < size_used; i++) {
+                            list_of_albums += artist_data.items[i].id;
+                            if (i < size_used-1) {
+                                list_of_albums += ",";
+                            }
+                        }
 
-                            var featuresurl = 'https://api.spotify.com/v1/audio-features/' + albumresponse.data.tracks.items[i].id;
+                        Spotify.getAlbums(list_of_albums)
+                        .then(function(album_data) {
 
-                            $http.get(featuresurl, {
-                                headers: {
-                                    "Authorization": 'Bearer ' + token
-                                }
-                              })
-                            .then(function(res){
+                            var list_of_ids = "";
+                            var id_number_check;
 
-                                var valence = res.data.valence;
-                                var tracklink = res.data.uri;
-
-                                if(valence > .65)
-                                {
-                                    tracks.push({
-                                        uri: tracklink,
-                                        valence: valence
+                            for (var i = 0; i < album_data.albums.length; i++) {
+                                for (var j = 0; j < album_data.albums[i].tracks.items.length; j++) {
+                                    
+                                    list_of_ids += album_data.albums[i].tracks.items[j].id;
+                                    
+                                    id_list.push({
+                                        id: album_data.albums[i].tracks.items[j].id,
+                                        name: album_data.albums[i].tracks.items[j].name
                                     });
 
-                                    console.log("Added");
+                                    if (j < album_data.albums[i].tracks.items.length-1) {
+                                        list_of_ids += ",";
+                                    }
+
+                                    id_number_check++;
+                                    if (id_number_check == 99) {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            Spotify.getTracksAudioFeatures(list_of_ids)
+                            .then(function (audio_data) {
+
+                                for (var i = 0; i < audio_data.audio_features.length; i++) {
+                                    if (audio_data.audio_features[i] == null) {
+                                        i++;
+                                    }
+                                    if (i == audio_data.audio_features.length) {
+                                        break;
+                                    }
+                                    var valence = audio_data.audio_features[i].valence;
+                                    var id = audio_data.audio_features[i].id
+
+                                    if (valence > .65) {
+                                        tracks.push({
+                                            id: id,
+                                            valence: valence
+                                        });
+                                    }
                                 }
 
-
-                              })
-
-                             .then(function() {
-
-                                var playlist_add_url = 'https://api.spotify.com/v1/users/bengu3/playlists/' + playlist_id + '/tracks?uris=';
-
                                 angular.forEach(tracks, function(value, key, obj) {
-
-                                    playlist_add_url += encodeURIComponent(value.uri);
+                                    playlist_add_list += value.id;
 
                                     if (key < obj.length-1) {
-                                        playlist_add_url += ",";
+                                        playlist_add_list += ",";
                                     }
                                 });
 
-                                $http({
-                                    url: playlist_add_url,
-                                    method: "POST",
-                                    headers: {
-                                        "Accept": 'application/json',
-                                        "Authorization": 'Bearer ' + token,
-                                    }
-                                })
-                                .then(function(response) {
-                                    // console.log(response);
-                                }, 
-                                function(response) { 
-                                        console.log("FAILED TO ADD TO PLAYLIST");
+                                if (tracks.length == 0) {
+                                    alert("You should find a happier band");
+                                }
+
+                                Spotify.addPlaylistTracks('bengu3', playlist_id, playlist_add_list)
+                                .then(function (data) {
+                                    console.log('tracks added to playlist');
                                 });
                             });
-                        }
+                        });
                     });
-                })
-            }, 
-            function(response) { 
-                    console.log("FAILED TO CREATE PLAYLIST");
+                });
             });
         }
 
         $scope.query = "";
-
     }
-});
-
-
-
-
+}]);
