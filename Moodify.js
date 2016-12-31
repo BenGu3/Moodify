@@ -1,11 +1,11 @@
 angular
-.module('MoodifyApp', ['spotify'])
+.module('MoodifyApp', ['spotify', 'LocalStorageModule'])
 .config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
     SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/callback.html');
     SpotifyProvider.setScope('playlist-read-private');
 })
-.controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
+.controller('MainController', ['$scope', 'Spotify', '$sce', 'localStorageService', function ($scope, Spotify, $sce, LocalStorageService) {
 
     $scope.login = function () {
       Spotify.login().then(function (data) {
@@ -16,8 +16,8 @@ angular
       })
     };
 
-    $scope.grab_token = function() {
-    	var token = storage.getItem('spotify_token');
+    $scope.grab_token = function(localStorageService) {
+    	var token = localStorageService.get('spotify_token');
     	$scope.token_place = token;
     };
 
