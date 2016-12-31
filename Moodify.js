@@ -17,7 +17,7 @@ angular
     };
 
     $scope.grab_token = function(localStorageService) {
-    	var token = localStorageService.get('spotify_token');
+    	var token = localStorageService.get('spotify-token');
     	$scope.token_place = token;
     };
 
