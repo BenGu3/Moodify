@@ -13,17 +13,13 @@ angular
     $scope.login = function () {
 		Spotify.login().then(function (data) {
 			alert("You are now logged in");
+			Spotify.getCurrentUser().then(function (user_data) {
+				console.log(user_data.id);
+				user_id = user_data.id;
+			});
 		}, function () {
 			console.log('didn\'t log in');
 		})
-    };
-
-    $scope.find_me = function () {
-    	Spotify.getCurrentUser().then(function (data) {
-			console.log(data);
-			console.log(data.id);
-			user_id = data.id;
-		});
     };
 
     $scope.stations = [];
@@ -150,7 +146,7 @@ angular
                                     alert("You should find a happier band");
                                 }
 
-                                Spotify.addPlaylistTracks('bengu3', playlist_id, playlist_add_list)
+                                Spotify.addPlaylistTracks(user_id, playlist_id, playlist_add_list)
                                 .then(function (data) {
                                     console.log('tracks added to playlist');
                                 });
