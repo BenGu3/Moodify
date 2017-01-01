@@ -1,9 +1,11 @@
 angular
 .module('MoodifyApp', ['spotify', 'LocalStorageModule'])
-.config(function (SpotifyProvider) {
+.config(function (SpotifyProvider, localStorageServiceProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
     SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/callback.html');
     SpotifyProvider.setScope('playlist-read-private user-read-private user-read-birthdate user-read-email');
+    localStorageServiceProvider.setPrefix('');
+
 })
 .controller('MainController', ['$scope', 'Spotify', '$sce', 'localStorageService', function ($scope, Spotify, $sce, localStorageService) {
 
