@@ -107,7 +107,8 @@ angular
                                     }
 
                                     id_number_check++;
-                                    if (id_number_check == 99) {
+                                    if (id_number_check == 90) {
+                                    	console.log(id_number_check)
                                         break;
                                     }
                                 }
