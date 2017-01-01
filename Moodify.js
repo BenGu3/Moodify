@@ -8,6 +8,8 @@ angular
 })
 .controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
 
+	var user_id;
+
     $scope.login = function () {
 		Spotify.login().then(function (data) {
 			alert("You are now logged in");
@@ -20,6 +22,7 @@ angular
     	Spotify.getCurrentUser().then(function (data) {
 			console.log(data);
 			console.log(data.id);
+			user_id = data.id;
 		});
     };
 
@@ -53,7 +56,7 @@ angular
             var tracks = [];    
             var playlist_add_list = "";
 
-            Spotify.createPlaylist('bengu3', { name: station_name })
+            Spotify.createPlaylist(user_id, { name: station_name })
             .then(function(playlist_data) {
 
                 var playlist_id = playlist_data.id;
