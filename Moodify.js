@@ -13,7 +13,9 @@ angular
       Spotify.login().then(function (data) {
         alert("You are now logged in");
         token = localStorageService.get('spotify-token');
-        Spotify.setAuthToken(token);
+        Spotify.setAuthToken(token).then(function (next_data) {
+		console.log(next_data)
+	});
       }, function () {
         console.log('didn\'t log in');
       })
