@@ -3,7 +3,7 @@ angular
 .config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
     SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/callback.html');
-    SpotifyProvider.setScope('playlist-read-private user-read-private user-read-birthdate user-read-email');
+    SpotifyProvider.setScope('playlist-modify-public playlist-modify-private playlist-read-private user-read-private user-read-birthdate user-read-email');
 
 })
 .controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
