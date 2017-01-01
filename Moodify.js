@@ -3,29 +3,33 @@ angular
 .config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
     SpotifyProvider.setRedirectUri('http://ec2-52-10-64-92.us-west-2.compute.amazonaws.com/Moodify/callback.html');
-    SpotifyProvider.setScope('playlist-read-private');
+    SpotifyProvider.setScope('playlist-read-private user-read-private user-read-birthdate user-read-email');
 })
 .controller('MainController', ['$scope', 'Spotify', '$sce', 'localStorageService', function ($scope, Spotify, $sce, localStorageService) {
 
+	var token;
+
     $scope.login = function () {
       Spotify.login().then(function (data) {
-        console.log(data);
         alert("You are now logged in");
+        token = localStorageService.get('spotify-token');
+        Spotify.setAuthToken(token);
       }, function () {
         console.log('didn\'t log in');
       })
     };
 
-    $scope.grab_token = function() {
-    	var token = localStorageService.get('spotify-token');
-
-	localStorageService.set('localStorageKey','Add this!');
-	console.log(localStorageService.get('localStorageKey'));
-
-
-	console.log(token);
-    	$scope.token_place = token;
+    $scope.find_me = function () {
+    	Spotify.getCurrentUser().then(function (data) {
+		  console.log(data);
+		});
     };
+
+  //   $scope.grab_token = function() {
+  //   	var token = localStorageService.get('spotify-token');
+		// console.log(token);
+  //   	$scope.token_place = token;
+  //   };
 
 
     $scope.stations = [];
