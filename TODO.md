@@ -10,7 +10,6 @@ Current State:
 Problems:
   
   Do something until logged in.
-  Too many songs per request sometimes.
   Do I need to refresh the auth token?
   Get from related artists.
   What to do if there are no "happy" songs.
