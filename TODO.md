@@ -1,6 +1,6 @@
 Current State:
 
-  No auth.
+  Auth added and functional.
   No style.
   Gets each track in first few albums by input artist.
   Adds tracks above .65 valence to Spotify playlist to my Spotify account.
@@ -9,8 +9,8 @@ Current State:
 
 Problems:
   
-  Too many songs per request sometimes.
-  Refreshing token through authorization.
+  Do something until logged in.
+  Do I need to refresh the auth token?
   Get from related artists.
   What to do if there are no "happy" songs.
   Backend
