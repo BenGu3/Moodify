@@ -10,6 +10,7 @@ Current State:
 Problems:
   
   Do something until logged in.
+  Don't add duplicate songs
   Do I need to refresh the auth token?
   Get from related artists.
   What to do if there are no "happy" songs.
