@@ -90,7 +90,7 @@ angular
                         .then(function(album_data) {
 
                             var list_of_ids = "";
-                            var id_number_check;
+                            var id_number_check = 0;
 
                             for (var i = 0; i < album_data.albums.length; i++) {
                                 for (var j = 0; j < album_data.albums[i].tracks.items.length; j++) {
@@ -104,15 +104,20 @@ angular
 
                                     if (j < album_data.albums[i].tracks.items.length-1) {
                                         list_of_ids += ",";
-                                    }
+                                    	id_number_check++;
+				    }
 
-                                    id_number_check++;
-                                    if (id_number_check == 90) {
+                                    if (id_number_check == 100) {
                                     	console.log(id_number_check)
                                         break;
                                     }
                                 }
+			        if (id_number_check == 100) {
+                                    console.log(id_number_check)
+                                    break;
+                                }
                             }
+			    console.log(id_number_check);
 
                             Spotify.getTracksAudioFeatures(list_of_ids)
                             .then(function (audio_data) {
