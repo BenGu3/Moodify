@@ -18,14 +18,12 @@
 
 <!-- Station list -->
   <div ng-repeat="station in stations">
-    {{station.name}}
+    <button ng-click="fetch_station($index)">{{station.name}}</div>
   </div>
 
   <hr>
 
   <div ng-bind-html="spotify_player"></div>
-  <p>checking...</p>
-
 
   <script>
     window.onload = function () {
