@@ -2,24 +2,36 @@ angular
 .module('MoodifyApp', ['spotify'])
 .config(function (SpotifyProvider) {
     SpotifyProvider.setClientId('1c3c2d057fad487fa8dbf62efbe4b4a6');
-    SpotifyProvider.setRedirectUri('http://localhost:3000/callback.html');
+    SpotifyProvider.setRedirectUri('http://localhost:3000/Moodify.html');
     SpotifyProvider.setScope('playlist-modify-public playlist-modify-private playlist-read-private user-read-private user-read-birthdate user-read-email');
 
 })
-.controller('MainController', ['$scope', 'Spotify', '$sce', function ($scope, Spotify, $sce) {
+.controller('MainController', ['$scope', 'Spotify', '$sce', '$window', function ($scope, Spotify, $sce, $window) {
 
 // -------------------------------- GLOBAL VARIABLES --------------------------------
 
-
     $scope.stations = [];
     var user_id;
+    $scope.load_check = false;
 
 
+// -------------------------------- LOADING SCREEN (PleaseWait) --------------------------------
 
-// -------------------------------- LOGIN --------------------------------
+
+    var start_up = function () {
+        $window.loading_screen = $window.pleaseWait({
+            logo: "",
+            backgroundColor: '#1DB954',
+            loadingHtml: "<div class=\"sk-cube-grid\"><div class=\"sk-cube sk-cube1\"></div><div class=\"sk-cube sk-cube2\"></div><div class=\"sk-cube sk-cube3\"></div><div class=\"sk-cube sk-cube4\"></div><div class=\"sk-cube sk-cube5\"></div><div class=\"sk-cube sk-cube6\"></div><div class=\"sk-cube sk-cube7\"></div><div class=\"sk-cube sk-cube8\"></div><div class=\"sk-cube sk-cube9\"></div></div>"
+        });
+    }
+
+
+// -------------------------------- LOGIN AND LOAD STATIONS --------------------------------
 	
 
     $scope.login = function () {
+        start_up();
         Spotify.login().then(function (data) {
             Spotify.getCurrentUser().then(function (user_data) {
                 user_id = user_data.id;
@@ -54,7 +66,8 @@ angular
                     }
                 });
             });
-            
+        $window.loading_screen.finish();
+        $scope.load_check = true;
         }, 
         function () {
             console.log('didn\'t log in');
@@ -141,6 +154,7 @@ angular
                             var list_of_ids = "";
                             var id_number_check = 0;
                             for (var i = 0; i < album_data.albums.length; i++) {
+                                //BAD HARDCODE
                                 if (album_data.albums[i].artists[0].name.toUpperCase != artist.toUpperCase) {
                                     break;
                                 }
@@ -173,6 +187,10 @@ angular
                                 for (var i = 0; i < audio_data.audio_features.length; i++) {
                                     if (audio_data.audio_features[i] == null) {
                                         i++;
+                                        //BAD HARDCODE
+                                        if (audio_data.audio_features[i] == null) {
+                                            i++
+                                        }
                                     }
                                     if (i == audio_data.audio_features.length) {
                                         break;
@@ -180,7 +198,7 @@ angular
                                     var valence = audio_data.audio_features[i].valence;
                                     var id = audio_data.audio_features[i].id
 
-                                    if (valence > .65) {
+                                    if (valence > .5) {
                                         tracks.push({
                                             id: id,
                                             valence: valence

@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html ng-app="MoodifyApp">
-
 <head>
-  <title>Moodify</title>
+    <title>Moodify</title>
+    <link href="please-wait/build/please-wait.css" rel="stylesheet">
+    <link href="spinkit/css/spinkit.css" rel="stylesheet">
 </head>
-
 <body ng-controller="MainController" style="text-align:center">
 
-  <button ng-click="login()">Login with Spotify</button>
-  
-<!-- Search form -->
-  <form id="search-form">
-    <input type="text" ng-model="query" value="" class="form-control" placeholder="Type an Artist Name"/>
-    <input type="submit" ng-click="fetch_new_station()" class="btn btn-primary" value="Search" />
-  </form>
+    <button ng-click="login()" ng-hide="load_check">Login with Spotify</button>
 
+    <div ng-show="load_check">
+        <!-- Search form -->
+        <form id="search-form">
+            <input type="text" ng-model="query" value="" class="form-control" placeholder="Type an Artist Name"/>
+            <input type="submit" ng-click="fetch_new_station()" class="btn btn-primary" value="Generate Station"/>
+        </form>
+        <!-- Station list -->
+        <div ng-repeat="station in stations">
+            <button ng-click="fetch_station($index)">{{station.name}}</button>
+        </div>
+        <hr>
+        <div ng-bind-html="spotify_player"></div>
+    </div>
 
-<!-- Station list -->
-  <div ng-repeat="station in stations">
-    <button ng-click="fetch_station($index)">{{station.name}}</div>
-  </div>
-
-  <hr>
-
-  <div ng-bind-html="spotify_player"></div>
-
-  <script>
-    window.onload = function () {
-      var hash = window.location.hash;
-      if (window.location.search.substring(1).indexOf("error") !== -1) {
-        window.close();
-      } else if (hash) {
-        var token = window.location.hash.split('&')[0].split('=')[1];
-        localStorage.setItem('spotify-token', token);
-      }
-    }
-  </script>
-  <script src="angular/angular.min.js"></script>
-  <script src="angular-spotify/dist/angular-spotify.min.js"></script>
-  <script src="javascripts/Moodify.js"></script>
+    <script>
+        window.onload = function () {
+            var hash = window.location.hash;
+            if (window.location.search.substring(1).indexOf("error") !== -1) {
+                window.close();
+            } else if (hash) {
+                var token = window.location.hash.split('&')[0].split('=')[1];
+                localStorage.setItem('spotify-token', token);
+            }
+        }
+    </script>
+    <script type="text/javascript" src="please-wait/build/please-wait.min.js"></script>
+    <script type="text/javascript" src="angular/angular.min.js"></script>
+    <script type="text/javascript" src="angular-spotify/dist/angular-spotify.min.js"></script>
+    <script type="text/javascript" src="javascripts/Moodify.js"></script>
 </body>
 </html>
