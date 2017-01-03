@@ -34,7 +34,15 @@ angular
         start_up();
         Spotify.login().then(function (data) {
             Spotify.getCurrentUser().then(function (user_data) {
+                console.log(user_data);
                 user_id = user_data.id;
+                if (user_data.images.length == 0) {
+                    $scope.user_img = "images/empty-avatar.png";
+                }
+                else {
+                    $scope.user_img = user_data.image[0].href;
+                }
+                $scope.user_info = user_id;
                 Spotify.getUserPlaylists(user_id, { offset: 0,limit: 50 }).then(function (user_playlist_data) {
                     var total_tracks = user_playlist_data.total;
                     for (var i = 0; i < user_playlist_data.items.length; i++) {

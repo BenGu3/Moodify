@@ -24,7 +24,12 @@
             </div>
             <div class="row">
                 <div class="col-md-4 offset-md-4 info">
-                    INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO
+                    -Login with your Spotify account.</br>
+                    -Enter an artist.</br>
+                    -Moodify will create a playlist optimized to musical positivity.</br>
+                    -The playlist can be played from Moodify but it has to open Spotify to play.</br>
+                    -The playlist will also be added to Spotify.</br>
+                    -Don't change the name of the playlists in Spotify.</br>
                 </div>
             </div>
         </div>
@@ -44,6 +49,9 @@
                             <button class="btn btn-secondary" type="submit" ng-click="fetch_new_station()">Generate Station</button>
                         </span>
                     </div>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <img src="{{user_img}}" height="42px" width="42px"> <span>{{user_info | uppercase}}</span>
                 </div>
             </div>
         </div>
