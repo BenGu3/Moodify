@@ -1,27 +1,74 @@
 <!DOCTYPE html>
 <html ng-app="MoodifyApp">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Moodify</title>
     <link href="please-wait/build/please-wait.css" rel="stylesheet">
     <link href="spinkit/css/spinkit.css" rel="stylesheet">
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
 </head>
+
 <body ng-controller="MainController" style="text-align:center">
 
-    <button ng-click="login()" ng-hide="load_check">Login with Spotify</button>
+    <div class="container" ng-hide="load_check">
+        <div class="login">
+            <div class="row title">
+                <h1>Moodify</h1>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary btn-lg" ng-click="login()" >Login with Spotify</button>
+            </div>
+            <div class="row">
+                <div class="col-md-4 offset-md-4 info">
+                    INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO INFO
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    
+
 
     <div ng-show="load_check">
-        <!-- Search form -->
-        <form id="search-form">
-            <input type="text" ng-model="query" value="" class="form-control" placeholder="Type an Artist Name"/>
-            <input type="submit" ng-click="fetch_new_station()" class="btn btn-primary" value="Generate Station"/>
-        </form>
-        <!-- Station list -->
-        <div ng-repeat="station in stations">
-            <button ng-click="fetch_station($index)">{{station.name}}</button>
+        <div class="container">
+            <div class="row">
+                <!-- Search form -->
+                <div class="col-md-6 offset-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="query" placeholder="Type an Artist Name">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="submit" ng-click="fetch_new_station()">Generate Station</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <hr>
-        <div ng-bind-html="spotify_player"></div>
+        <div class="container">
+            <div class="row main">
+                <!-- Station list -->
+                <div class="col-md-3 station_list">
+                    <div ng-repeat="station in stations">
+                        <button ng-click="fetch_station($index)">{{station.name}}</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div ng-bind-html="spotify_player"></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
+    <footer class="footer">
+        <div class="container">
+            Powered by <a href="https://www.spotify.com/"><img width="70" src="images/Spotify_Logo_RGB_White.png"></a>
+        </div>
+    </footer>
 
     <script>
         window.onload = function () {

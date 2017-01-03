@@ -1,8 +1,54 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.title {
+  margin-bottom: 25px;
+  color: white;
 }
 
-a {
-  color: #00B7FF;
+.login {
+  margin-top: 10%;
+}
+
+.info {
+  background-color: white;
+  border-radius: 2%;
+  padding: 10px;
+  margin-top: 35px;
+}
+
+.main {
+  margin-top: 10px;
+}
+
+.station_list {
+  height: 120%;
+  background-color: white;
+  padding: 10px;
+}
+
+
+.station_list button {
+  width: 90%;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #dd944a;
+  padding-top: 10px;
+
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #dd944a;
+  color: white;
 }
