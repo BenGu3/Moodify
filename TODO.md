@@ -4,17 +4,12 @@ Current State:
   No style.
   Gets each track in first few albums by input artist.
   Adds tracks above .65 valence to Spotify playlist to my Spotify account.
-  
+  Fake Backend
+    Get all playlists from Spotify as user is logged in, search through playlists for '(Moodify)' and add playlists.
 
 
 Problems:
   
   Do something until logged in.
-  Don't add duplicate songs
   Do I need to refresh the auth token?
   Get from related artists.
-  What to do if there are no "happy" songs.
-  Backend
-    Possibly using Spotify itself as the backend.
-    I could pull the playlist from Spotify that was already created when a station is clicked.
-    Save the names of the playlists with MongoDB or Firebase.
