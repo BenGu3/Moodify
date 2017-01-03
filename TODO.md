@@ -1,6 +1,7 @@
 Current State:
 
   Auth added and functional.
+  Login screen.
   No style.
   Gets each track in first few albums by input artist.
   Adds tracks above .65 valence to Spotify playlist to my Spotify account.
@@ -10,6 +11,5 @@ Current State:
 
 Problems:
   
-  Do something until logged in.
   Do I need to refresh the auth token?
   Get from related artists.
